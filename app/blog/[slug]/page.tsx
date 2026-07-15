@@ -1,0 +1,2 @@
+import {notFound} from "next/navigation";import {createClient} from "@/lib/supabase/server";
+export default async function Post({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const s=await createClient();const {data:p}=await s.from("posts").select("*").eq("slug",slug).eq("published",true).single();if(!p)notFound();return <article className="article"><div className="eyebrow">From the author</div><h1>{p.title}</h1>{p.body.split("\n").filter(Boolean).map((x:string,i:number)=><p key={i}>{x}</p>)}</article>}

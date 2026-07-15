@@ -1,0 +1,2 @@
+"use server";import {createClient} from "@/lib/supabase/server";import {redirect} from "next/navigation";import {revalidatePath} from "next/cache";
+export async function saveReview(id:string){const supabase=await createClient();const {data:{user}}=await supabase.auth.getUser();if(!user)redirect("/login");await supabase.from("saved_reviews").upsert({user_id:user.id,review_id:id});revalidatePath(`/reviews/${id}`)}

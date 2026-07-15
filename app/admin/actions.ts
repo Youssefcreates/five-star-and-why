@@ -1,0 +1,4 @@
+"use server";import {createClient} from "@/lib/supabase/server";import {revalidatePath} from "next/cache";
+async function adminClient(){const s=await createClient();const {data:{user}}=await s.auth.getUser();if(!user)throw new Error("Unauthorized");const {data:p}=await s.from("profiles").select("is_admin").eq("id",user.id).single();if(!p?.is_admin)throw new Error("Unauthorized");return s}
+export async function moderate(id:string,status:"published"|"rejected"){const s=await adminClient();await s.from("reviews").update({status,updated_at:new Date().toISOString()}).eq("id",id);revalidatePath("/admin");revalidatePath("/discover")}
+export async function addPost(formData:FormData){const s=await adminClient();await s.from("posts").insert({title:String(formData.get("title")),slug:String(formData.get("slug")),excerpt:String(formData.get("excerpt")),body:String(formData.get("body")),published:true});revalidatePath("/blog");revalidatePath("/admin")}

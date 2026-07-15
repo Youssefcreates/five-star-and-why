@@ -45,6 +45,10 @@ Deploy, then add `fivestarandwhy.com` under **Project Settings > Domains**. Verc
 
 New reviews use `pending` status. To publish the first submissions, open **Supabase > Table Editor > reviews** and change `status` to `published`. A custom admin dashboard can be added after the first deployment.
 
+## Functional upgrade
+
+After the original schema is installed, run `supabase/upgrade.sql` once in the Supabase SQL Editor. It enables the owner dashboard, moderation policies, and editable author blog.
+
 ## Important production note
 
 The public publishable key is safe in browser code. Never commit a Supabase service-role key or database password.
