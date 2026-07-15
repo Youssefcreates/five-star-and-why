@@ -1,0 +1,2 @@
+import {createClient} from "@/lib/supabase/server";import {redirect} from "next/navigation";
+export default async function Profile(){const supabase=await createClient();const {data:{user}}=await supabase.auth.getUser();if(!user)redirect("/login");return <div className="form-wrap"><div className="eyebrow">Member profile</div><h1>{user.user_metadata.display_name||"Welcome"}</h1><p className="muted">{user.email}</p><div className="notice">Your published reviews and saved favorites will appear here.</div></div>}
